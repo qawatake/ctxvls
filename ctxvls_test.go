@@ -83,6 +83,7 @@ func TestWithKeyValue(t *testing.T) {
 			i := i
 			go func() {
 				ctxvls.WithKeyValues(ctx, "a", i)
+				ctxvls.ValuesFromByKey(ctx, "a")
 				wg.Done()
 			}()
 		}
