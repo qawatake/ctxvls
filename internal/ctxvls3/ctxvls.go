@@ -20,12 +20,6 @@ func ValuesFrom[T comparable, V any](ctx context.Context, key T) []V {
 	return valuesFrom(store)
 }
 
-func AnyValuesFrom[T comparable, V any](ctx context.Context, key T) []any {
-	pkey := partitionKey[T]{key: key}
-	store := storeFromContext[T, V](ctx, pkey)
-	return anyValuesFrom(store)
-}
-
 func valuesFrom[V any](s *valueStore[V]) []V {
 	if s == nil {
 		return nil
@@ -35,25 +29,6 @@ func valuesFrom[V any](s *valueStore[V]) []V {
 		numValues += len(ss.values)
 	}
 	values := make([]V, numValues)
-	i := numValues - 1
-	for ss := s; ss != nil; ss = ss.parent {
-		for j := len(ss.values) - 1; j >= 0; j-- {
-			values[i] = ss.values[j]
-			i--
-		}
-	}
-	return values
-}
-
-func anyValuesFrom[V any](s *valueStore[V]) []any {
-	if s == nil {
-		return nil
-	}
-	numValues := 0
-	for ss := s; ss != nil; ss = ss.parent {
-		numValues += len(ss.values)
-	}
-	values := make([]any, numValues)
 	i := numValues - 1
 	for ss := s; ss != nil; ss = ss.parent {
 		for j := len(ss.values) - 1; j >= 0; j-- {

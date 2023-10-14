@@ -21,10 +21,10 @@ func TestValuesFromByKey(t *testing.T) {
 
 	t.Run("called twice with the same key", func(t *testing.T) {
 		ctx := context.Background()
-		ctx = ctxvls.WithKeyValues(ctx, "a", 1, 2)
-		ctx = ctxvls.WithKeyValues(ctx, "a", 2, 3)
+		ctx = ctxvls.WithKeyValues(ctx, "a", "a", 1, 2)
+		ctx = ctxvls.WithKeyValues(ctx, "a", "b", 2, 3)
 		got := ctxvls.ValuesFromByKey(ctx, "a")
-		want := []any{1, 2, 2, 3}
+		want := []any{"a", 1, 2, "b", 2, 3}
 		if diff := cmp.Diff(want, got); diff != "" {
 			t.Error(diff)
 		}

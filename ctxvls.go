@@ -13,7 +13,7 @@ func WithKeyValues[T comparable](ctx context.Context, key T, values ...any) cont
 
 // ValuesFromByKey returns all the values stored for key by WithKeyValues.
 func ValuesFromByKey[T comparable](ctx context.Context, key T) []any {
-	return ctxvls.AnyValuesFrom[T, any](ctx, key)
+	return ctxvls.ValuesFrom[T, any](ctx, key)
 }
 
 // WithValues returns a copy of parent that stores values.
