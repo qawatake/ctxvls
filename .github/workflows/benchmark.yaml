@@ -10,4 +10,4 @@ jobs:
         with:
           go-version-file: go.mod
       - name: Run tests for benchmark
-        run: make bench
+        run: make bench.s
