@@ -15,7 +15,7 @@ mod.clean:
 	rm -f go.mod go.sum
 	cat go.mod.bk > go.mod
 
-BENCH_COUNT := 30
+BENCH_COUNT ?= 6
 
 bench: bin/benchstat
 	perl -pi -e 's|(github.com/qawatake/ctxvls/internal/ctxvls)(\d+)|$$1 . (1)|ge' ctxvls.go

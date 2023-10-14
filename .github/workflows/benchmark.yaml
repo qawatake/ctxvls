@@ -12,3 +12,5 @@ jobs:
           cache-dependency-path: go_test.sum
       - name: Run tests for benchmark
         run: make bench
+        env:
+          BENCH_COUNT: 10
