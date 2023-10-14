@@ -13,4 +13,4 @@ jobs:
       - name: Run tests for benchmark
         run: make bench
         env:
-          BENCH_COUNT: 10
+          BENCH_COUNT: 6
