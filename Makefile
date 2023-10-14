@@ -15,19 +15,17 @@ mod.clean:
 	rm -f go.mod go.sum
 	cat go.mod.bk > go.mod
 
-bench: bin/benchstat
-	go test -modfile=go_test.mod -bench=. -benchmem -run=^$ . -count 10 | tee bench1.txt
-	perl -pi -e 's|github.com/qawatake/ctxvls/internal/ctxvls|github.com/qawatake/ctxvls/internal/ctxvls2|g' ctxvls.go
-	go test -modfile=go_test.mod -bench=. -benchmem -run=^$ . -count 10 | tee bench2.txt
-	perl -pi -e 's|github.com/qawatake/ctxvls/internal/ctxvls2|github.com/qawatake/ctxvls/internal/ctxvls|g' ctxvls.go
-	$(BINDIR)/benchstat bench1.txt bench2.txt
+BENCH_COUNT := 30
 
-bench.s: bin/benchstat
-	go test -modfile=go_test.mod -bench=. -benchmem -run=^$ . -count 30 > bench1.txt
-	perl -pi -e 's|github.com/qawatake/ctxvls/internal/ctxvls|github.com/qawatake/ctxvls/internal/ctxvls2|g' ctxvls.go
-	go test -modfile=go_test.mod -bench=. -benchmem -run=^$ . -count 30 > bench2.txt
-	perl -pi -e 's|github.com/qawatake/ctxvls/internal/ctxvls2|github.com/qawatake/ctxvls/internal/ctxvls|g' ctxvls.go
-	$(BINDIR)/benchstat bench1.txt bench2.txt
+bench: bin/benchstat
+	perl -pi -e 's|(github.com/qawatake/ctxvls/internal/ctxvls)(\d+)|$$1 . (1)|ge' ctxvls.go
+	go test -modfile=go_test.mod -bench=. -benchmem -run=^$$ . -count $(BENCH_COUNT) | tee bench1.txt
+	perl -pi -e 's|(github.com/qawatake/ctxvls/internal/ctxvls)(\d+)|$$1 . ($$2+1)|ge' ctxvls.go
+	go test -modfile=go_test.mod -bench=. -benchmem -run=^$$ . -count $(BENCH_COUNT) | tee bench2.txt
+	perl -pi -e 's|(github.com/qawatake/ctxvls/internal/ctxvls)(\d+)|$$1 . ($$2+1)|ge' ctxvls.go
+	go test -modfile=go_test.mod -bench=. -benchmem -run=^$$ . -count $(BENCH_COUNT) | tee bench3.txt
+	$(BINDIR)/benchstat bench2.txt bench3.txt bench1.txt
+	perl -pi -e 's|(github.com/qawatake/ctxvls/internal/ctxvls)(\d+)|$$1 . (3)|ge' ctxvls.go
 
 bin/benchstat:
 	GOBIN=$(BINDIR) go install golang.org/x/perf/cmd/benchstat@latest

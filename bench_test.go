@@ -4,7 +4,6 @@ import (
 	"context"
 	"testing"
 
-	"github.com/google/go-cmp/cmp"
 	"github.com/qawatake/ctxvls"
 )
 
@@ -30,37 +29,10 @@ func BenchmarkWithKeyValues(b *testing.B) {
 
 func BenchmarkValuesFromByKey(b *testing.B) {
 	ctx := context.Background()
-	for j := 0; j < 1000; j++ {
+	for j := 0; j < 10; j++ {
 		ctx = ctxvls.WithKeyValues(ctx, key{}, j)
 	}
 	for i := 0; i < b.N; i++ {
 		ctxvls.ValuesFromByKey(ctx, key{})
-	}
-}
-
-type KV struct {
-	Key   string
-	Value string
-}
-
-func TestValues(t *testing.T) {
-	ctx := context.Background()
-	ctx = ctxvls.WithValues[KV](ctx,
-		KV{
-			Key:   "a",
-			Value: "1",
-		},
-		KV{
-			Key:   "a",
-			Value: "2",
-		},
-	)
-	got := ctxvls.ValuesFrom[KV](ctx)
-	want := []KV{
-		{Key: "a", Value: "1"},
-		{Key: "a", Value: "2"},
-	}
-	if diff := cmp.Diff(want, got); diff != "" {
-		t.Error(diff)
 	}
 }

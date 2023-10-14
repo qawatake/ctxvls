@@ -3,7 +3,7 @@ package ctxvls
 import (
 	"context"
 
-	ctxvls "github.com/qawatake/ctxvls/internal/ctxvls"
+	ctxvls "github.com/qawatake/ctxvls/internal/ctxvls3"
 )
 
 // WithKeyValues returns a copy of parent that stores values for key.

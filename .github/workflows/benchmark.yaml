@@ -11,4 +11,4 @@ jobs:
           go-version-file: go.mod
           cache-dependency-path: go_test.sum
       - name: Run tests for benchmark
-        run: make bench.s
+        run: make bench
