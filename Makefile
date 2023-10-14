@@ -19,3 +19,10 @@ bench:
 	go test -modfile=go_test.mod -bench=. -benchmem -run=^$ . -count 10 | tee bench2.txt
 	sed -i '' 's|github.com/qawatake/ctxvls/internal/ctxvls2|github.com/qawatake/ctxvls/internal/ctxvls|g' ctxvls.go
 	benchstat bench1.txt bench2.txt
+
+bench.s:
+	go test -modfile=go_test.mod -bench=. -benchmem -run=^$ . -count 10 > bench1.txt
+	sed -i '' 's|github.com/qawatake/ctxvls/internal/ctxvls|github.com/qawatake/ctxvls/internal/ctxvls2|g' ctxvls.go
+	go test -modfile=go_test.mod -bench=. -benchmem -run=^$ . -count 10 > bench2.txt
+	sed -i '' 's|github.com/qawatake/ctxvls/internal/ctxvls2|github.com/qawatake/ctxvls/internal/ctxvls|g' ctxvls.go
+	benchstat bench1.txt bench2.txt
