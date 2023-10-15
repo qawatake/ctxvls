@@ -1,6 +1,6 @@
 # ctxvls
 
-`ctxvls` provides simple APIs for storing and retrieving values in a context.
+`ctxvls` associate multiple values with a key and store them in context, and it is designed to be safe for concurrent use.
 
 ```go
 package main
