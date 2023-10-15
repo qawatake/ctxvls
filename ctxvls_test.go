@@ -88,12 +88,19 @@ func TestValuesFromByKey(t *testing.T) {
 	t.Run("Parallel", func(t *testing.T) {
 		t.Parallel()
 		ctx := context.Background()
+		ctx = ctxvls.WithKeyValues(ctx, "a", 1, 2)
 		var wg sync.WaitGroup
-		wg.Add(1000)
 		for i := 0; i < 1000; i++ {
 			i := i
+			wg.Add(1)
 			go func() {
 				ctxvls.WithKeyValues(ctx, "a", i)
+				wg.Done()
+			}()
+		}
+		for i := 0; i < 1000; i++ {
+			wg.Add(1)
+			go func() {
 				ctxvls.ValuesFromByKey(ctx, "a")
 				wg.Done()
 			}()
@@ -169,12 +176,20 @@ func TestValuesFrom(t *testing.T) {
 	t.Run("Parallel", func(t *testing.T) {
 		t.Parallel()
 		ctx := context.Background()
+		ctx = ctxvls.WithValues(ctx, 1, 2)
+
 		var wg sync.WaitGroup
-		wg.Add(1000)
 		for i := 0; i < 1000; i++ {
 			i := i
+			wg.Add(1)
 			go func() {
 				ctxvls.WithValues(ctx, i, i+1, i+2)
+				wg.Done()
+			}()
+		}
+		for i := 0; i < 1000; i++ {
+			wg.Add(1)
+			go func() {
 				ctxvls.ValuesFrom[int](ctx)
 				wg.Done()
 			}()
