@@ -1,5 +1,10 @@
 on:
   workflow_dispatch:
+    inputs:
+      bench_count:
+        type: number
+        description: "Number of times to run the benchmark"
+        default: 30
 name: benchmark
 jobs:
   test:
@@ -13,4 +18,4 @@ jobs:
       - name: Run tests for benchmark
         run: make bench
         env:
-          BENCH_COUNT: 6
+          BENCH_COUNT: ${{ inputs.bench_count }}
