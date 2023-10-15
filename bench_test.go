@@ -19,9 +19,7 @@ func BenchmarkWithKeyValue(b *testing.B) {
 func BenchmarkWithKeyValues(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		ctx := context.Background()
-		for j := 0; j < 1000; j++ {
-			ctx = ctxvls.WithKeyValues(ctx, key{}, j+1, j+2, j+3, j+4, j+5, j+6, j+7, j+8, j+9, j+10)
-		}
+		ctx = ctxvls.WithKeyValues(ctx, key{}, j+1, j+2, j+3, j+4, j+5, j+6, j+7, j+8, j+9, j+10)
 	}
 }
 
