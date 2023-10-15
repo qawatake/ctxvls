@@ -4,7 +4,7 @@ import "context"
 
 func WithKeyValues[T comparable, V any](ctx context.Context, key T, values ...V) context.Context {
 	pkey := partitionKey[T]{key: key}
-	store := storeFromContext[T, V](ctx, pkey)
+	store := fromContext[T, V](ctx, pkey)
 	newStore := &valueStore[V]{
 		parent: store,
 		values: values,
@@ -14,14 +14,8 @@ func WithKeyValues[T comparable, V any](ctx context.Context, key T, values ...V)
 
 func ValuesFrom[T comparable, V any](ctx context.Context, key T) []V {
 	pkey := partitionKey[T]{key: key}
-	store := storeFromContext[T, V](ctx, pkey)
+	store := fromContext[T, V](ctx, pkey)
 	return store.Values()
-}
-
-func AnyValuesFrom[T comparable, V any](ctx context.Context, key T) []any {
-	pkey := partitionKey[T]{key: key}
-	store := storeFromContext[T, V](ctx, pkey)
-	return store.AnyValues()
 }
 
 func (s *valueStore[V]) Values() []V {
@@ -30,17 +24,6 @@ func (s *valueStore[V]) Values() []V {
 	}
 	values := s.parent.Values()
 	values = append(values, s.values...)
-	return values
-}
-
-func (s *valueStore[V]) AnyValues() []any {
-	if s == nil {
-		return nil
-	}
-	values := s.parent.AnyValues()
-	for _, v := range s.values {
-		values = append(values, v)
-	}
 	return values
 }
 
@@ -53,7 +36,7 @@ type partitionKey[T comparable] struct {
 	key T
 }
 
-func storeFromContext[T comparable, V any](ctx context.Context, pkey partitionKey[T]) *valueStore[V] {
+func fromContext[T comparable, V any](ctx context.Context, pkey partitionKey[T]) *valueStore[V] {
 	if store, ok := ctx.Value(pkey).(*valueStore[V]); ok {
 		return store
 	}
