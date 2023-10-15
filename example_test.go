@@ -37,11 +37,13 @@ func ExampleValuesFrom() {
 	// [100 200 300]
 }
 
-func Example_readme() {
+func Example() {
+	type MyKey struct{}
 	ctx := context.Background()
-	ctx = ctxvls.WithKeyValues(ctx, "a", 1, "b", 'x')
-	ctx = ctxvls.WithKeyValues(ctx, "a", 2, "c", 'y')
-	values := ctxvls.ValuesFromByKey(ctx, "a")
+	key := MyKey{}
+	ctx = ctxvls.WithKeyValues(ctx, key, 1, "b", 'x')
+	ctx = ctxvls.WithKeyValues(ctx, key, 2, "c", 'y')
+	values := ctxvls.ValuesFromByKey(ctx, key)
 	fmt.Println(values)
 	// Output:
 	// [1 b 120 2 c 121]
