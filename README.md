@@ -2,7 +2,7 @@
 
 [![test](https://github.com/qawatake/ctxvls/actions/workflows/test.yaml/badge.svg)](https://github.com/qawatake/ctxvls/actions/workflows/test.yaml)
 
-`ctxvls` associate multiple values with a key and store them in context, and it is designed to be safe for concurrent use.
+Package `ctxvls` associate multiple values with a key and store them in context, and it is designed to be safe for concurrent use.
 
 ```go
 package main

@@ -1,3 +1,4 @@
+// Package ctxvls associate multiple values with a key and store them in context, and it is designed to be safe for concurrent use.
 package ctxvls
 
 import (
