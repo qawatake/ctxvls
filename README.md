@@ -15,8 +15,6 @@ import (
   "github.com/qawatake/ctxvls"
 )
 
-type MyKey struct{}
-
 func main() {
 	ctx := context.Background()
 	ctx = ctxvls.WithValues(ctx, "a", 1, 2, 3)
