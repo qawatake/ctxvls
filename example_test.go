@@ -7,44 +7,16 @@ import (
 	"github.com/qawatake/ctxvls"
 )
 
-func ExampleValuesFromByKey() {
+func Example() {
 	ctx := context.Background()
-	ctx = ctxvls.WithKeyValues(ctx, "a", 1, "b", 'x')
-	ctx = ctxvls.WithKeyValues(ctx, "a", 2, "c", 'y')
-	ctx = ctxvls.WithKeyValues(ctx, "b", 3, "c", 'z')
-	valuesForA := ctxvls.ValuesFromByKey(ctx, "a")
-	valuesForB := ctxvls.ValuesFromByKey(ctx, "b")
+	ctx = ctxvls.WithValues(ctx, "a", 1, 2, 3)
+	ctx = ctxvls.WithValues(ctx, "a", 2, 3, 4)
+	ctx = ctxvls.WithValues(ctx, "b", 3, 4, 5)
+	valuesForA := ctxvls.ValuesFrom[string, int](ctx, "a")
+	valuesForB := ctxvls.ValuesFrom[string, int](ctx, "b")
 	fmt.Println(valuesForA)
 	fmt.Println(valuesForB)
 	// Output:
-	// [1 b 120 2 c 121]
-	// [3 c 122]
-}
-
-func ExampleValuesFrom() {
-	ctx := context.Background()
-	var a, b, c int = 1, 2, 3
-	type MyInt int
-	var x, y, z MyInt = 100, 200, 300
-	ctx = ctxvls.WithValues(ctx, a, b, c)
-	ctx = ctxvls.WithValues(ctx, x, y, z)
-	ints := ctxvls.ValuesFrom[int](ctx)
-	myints := ctxvls.ValuesFrom[MyInt](ctx)
-	fmt.Println(ints)
-	fmt.Println(myints)
-	// Output:
-	// [1 2 3]
-	// [100 200 300]
-}
-
-func Example() {
-	type MyKey struct{}
-	ctx := context.Background()
-	key := MyKey{}
-	ctx = ctxvls.WithKeyValues(ctx, key, 1, "b", 'x')
-	ctx = ctxvls.WithKeyValues(ctx, key, 2, "c", 'y')
-	values := ctxvls.ValuesFromByKey(ctx, key)
-	fmt.Println(values)
-	// Output:
-	// [1 b 120 2 c 121]
+	// [1 2 3 2 3 4]
+	// [3 4 5]
 }
